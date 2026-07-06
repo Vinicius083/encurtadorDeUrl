@@ -1,0 +1,8 @@
+FROM cassandra:5.0
+
+ENV CASSANDRA_CLUSTER_NAME=encurtador-cluster
+ENV CASSANDRA_DC=datacenter1
+ENV CASSANDRA_RACK=rack1
+ENV CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+
+EXPOSE 9042
