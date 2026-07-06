@@ -22,7 +22,15 @@ cp .env.example .env
 uvicorn app.main:app --reload
 ```
 
-Docs: http://localhost:8000/docs
+## Documentacao Swagger
+
+Com a API rodando:
+
+- Swagger UI: http://localhost:8000/docs
+- ReDoc: http://localhost:8000/redoc
+- OpenAPI JSON: http://localhost:8000/openapi.json
+
+Arquivo gerado para entrega: `backend/docs/openapi.json`.
 
 ## Rotas principais
 
