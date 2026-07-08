@@ -41,6 +41,24 @@
 
     <!-- Right Side: Form Content -->
     <div class="card-form">
+      <div class="mobile-brand-header">
+        <svg
+          class="brand-logo"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m2.542-2.543l1.101-1.101a4 4 0 10-5.656-5.656l-1.5 1.5"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        <span class="brand-name">Shortify</span>
+      </div>
+
       <div class="form-header">
         <h1>BEM-VINDO</h1>
         <p>Acesse sua conta para continuar</p>
@@ -127,25 +145,6 @@
               }
             </div>
           }
-        </div>
-
-        <div class="demo-tip">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-          >
-            <path
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <span>Use <strong>erro@teste.com</strong> para simular falha no login.</span>
         </div>
 
         <button type="submit" class="btn-submit" [disabled]="isSubmitting()">

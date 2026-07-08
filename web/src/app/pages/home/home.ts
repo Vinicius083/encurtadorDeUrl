@@ -40,6 +40,7 @@ export class HomeComponent implements OnInit {
   readonly showQrModal = signal(false);
   readonly showEditModal = signal(false);
   readonly showDeleteModal = signal(false);
+  readonly showRegisterModal = signal(false);
   
   readonly currentPage = signal(1);
   readonly itemsPerPage = 5;
@@ -178,10 +179,15 @@ export class HomeComponent implements OnInit {
     this.showQrModal.set(true);
   }
 
+  openRegisterModal() {
+    this.showRegisterModal.set(true);
+  }
+
   closeAllModals() {
     this.showQrModal.set(false);
     this.showEditModal.set(false);
     this.showDeleteModal.set(false);
+    this.showRegisterModal.set(false);
     this.selectedUrl.set(null);
   }
 

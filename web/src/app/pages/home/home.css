@@ -719,6 +719,11 @@
   }
 }
 
+/* Floating Action Button */
+.fab-btn {
+  display: none;
+}
+
 /* Responsive configurations */
 @media (max-width: 1024px) {
   .dashboard-content {
@@ -726,17 +731,46 @@
     padding: 1.5rem;
   }
 
-  .urls-section, .cadastre-section {
+  .urls-section {
     flex: none;
     width: 100%;
   }
   
   .cadastre-section {
-    min-width: 0;
+    display: none;
   }
 
   .dashboard-header {
     padding: 1rem 1.5rem;
+  }
+
+  .fab-btn {
+    display: flex;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    border: none;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 24px rgba(99, 102, 241, 0.4);
+    cursor: pointer;
+    z-index: 90;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .fab-btn:hover {
+    background: var(--primary-hover);
+    transform: scale(1.05);
+    box-shadow: 0 10px 28px rgba(99, 102, 241, 0.5);
+  }
+
+  .fab-btn:active {
+    transform: scale(0.95);
   }
 }
 

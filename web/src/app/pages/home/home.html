@@ -313,3 +313,79 @@
     </div>
   </div>
 }
+
+<!-- REGISTER MODAL (Mobile Only) -->
+@if (showRegisterModal()) {
+  <div class="modal-overlay" (click)="closeAllModals()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div>
+          <h3 style="margin: 0; font-size: 1.25rem; font-weight: 700; color: var(--text-main);">Cadastrar Link</h3>
+          <p style="margin: 3px 0 0 0; font-size: 0.85rem; color: var(--text-muted);">Crie um novo link encurtado</p>
+        </div>
+        <button class="modal-close" (click)="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterUrl()" class="register-url-form">
+          <!-- Alias Input -->
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="modal-alias" style="display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Alias (opcional)</label>
+            <div class="input-wrapper">
+              <span class="prefix">shrt.fy/</span>
+              <input 
+                type="text" 
+                id="modal-alias" 
+                formControlName="alias" 
+                placeholder="apelido-customizado"
+              />
+            </div>
+            <span class="help-text">Se deixado em branco, geramos um apelido aleatório.</span>
+          </div>
+
+          <!-- Original URL Input -->
+          <div class="form-group" style="margin-bottom: 1.25rem;">
+            <label for="modal-originalUrl" style="display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">URL original *</label>
+            <div class="input-wrapper">
+              <input 
+                type="url" 
+                id="modal-originalUrl" 
+                formControlName="originalUrl" 
+                placeholder="https://exemplo.com/pagina-longa"
+                [class.input-error]="registerForm.get('originalUrl')?.touched && registerForm.get('originalUrl')?.invalid"
+              />
+            </div>
+            @if (registerForm.get('originalUrl')?.touched && registerForm.get('originalUrl')?.invalid) {
+              <span class="error-msg">Por favor, insira uma URL válida (deve iniciar com http:// ou https://).</span>
+            }
+          </div>
+
+          <!-- Expiration (TTL) -->
+          <div class="form-group" style="margin-bottom: 1.5rem;">
+            <label for="modal-expiration" style="display: block; margin-bottom: 0.5rem; font-size: 0.85rem; font-weight: 600;">Tempo de expiração (opcional)</label>
+            <select id="modal-expiration" formControlName="expiration" class="select-expiration">
+              <option value="1">1 Dia (24 horas)</option>
+              <option value="7">7 Dias (1 semana)</option>
+              <option value="30">30 Dias (1 mês)</option>
+              <option value="never">Nunca expirar</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-submit" style="width: 100%; display: flex; justify-content: center; align-items: center; padding: 0.875rem; border-radius: 12px; border: none; background: var(--primary); color: white; font-weight: 600; cursor: pointer;">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right: 0.5rem;">
+              <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Encurtar Link</span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- Floating Action Button (FAB) -->
+<button class="fab-btn" (click)="openRegisterModal()" title="Encurtar novo link">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="24" height="24">
+    <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
+
