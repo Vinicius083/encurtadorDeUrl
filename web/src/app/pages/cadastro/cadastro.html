@@ -1,0 +1,233 @@
+<div class="page-container">
+  <div class="login-card">
+    <!-- Left Side: Decorative Panel (consistent with Login) -->
+    <div class="card-visual">
+      <div class="visual-bg">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+      </div>
+      <div class="visual-content">
+        <div class="brand">
+          <svg
+            class="brand-logo"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m2.542-2.543l1.101-1.101a4 4 0 10-5.656-5.656l-1.5 1.5"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="brand-name">Shortify</span>
+        </div>
+
+        <div class="promo-text">
+          <h2>Simplifique seus links, amplie seu alcance.</h2>
+          <p>
+            Crie links encurtados personalizados, acompanhe estatísticas e gerencie tudo em um único
+            painel moderno.
+          </p>
+        </div>
+
+        <div class="visual-footer">
+          <span>&copy; 2026 Shortify Inc.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Form Content -->
+    <div class="card-form">
+      <div class="form-header">
+        <h1>BEM-VINDO</h1>
+        <p>Crie sua conta gratuitamente</p>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
+        <!-- Nome Completo Field -->
+        <div class="form-group">
+          <label for="fullName">Nome completo</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="text"
+              id="fullName"
+              formControlName="fullName"
+              placeholder="Seu nome completo"
+              [class.input-error]="
+                registerForm.get('fullName')?.touched && registerForm.get('fullName')?.invalid
+              "
+            />
+          </div>
+
+          @if (registerForm.get('fullName')?.touched && registerForm.get('fullName')?.errors) {
+            <div class="error-msg">
+              @if (registerForm.get('fullName')?.errors?.['required']) {
+                <span>O nome completo é obrigatório.</span>
+              }
+              @if (registerForm.get('fullName')?.errors?.['minlength']) {
+                <span>O nome deve ter no mínimo 3 caracteres.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="seu.email@exemplo.com"
+              [class.input-error]="
+                registerForm.get('email')?.touched && registerForm.get('email')?.invalid
+              "
+            />
+          </div>
+
+          @if (registerForm.get('email')?.touched && registerForm.get('email')?.errors) {
+            <div class="error-msg">
+              @if (registerForm.get('email')?.errors?.['required']) {
+                <span>O e-mail é obrigatório.</span>
+              }
+              @if (registerForm.get('email')?.errors?.['email']) {
+                <span>Digite um e-mail válido (ex: nome@dominio.com).</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="Escolha uma senha forte"
+              [class.input-error]="
+                registerForm.get('password')?.touched && registerForm.get('password')?.invalid
+              "
+            />
+          </div>
+
+          @if (registerForm.get('password')?.touched && registerForm.get('password')?.errors) {
+            <div class="error-msg">
+              @if (registerForm.get('password')?.errors?.['required']) {
+                <span>A senha é obrigatória.</span>
+              }
+              @if (registerForm.get('password')?.errors?.['minlength']) {
+                <span>A senha deve ter pelo menos 8 caracteres.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Confirm Password Field -->
+        <div class="form-group">
+          <label for="confirmPassword">Confirmar senha</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="password"
+              id="confirmPassword"
+              formControlName="confirmPassword"
+              placeholder="Repita sua senha"
+              [class.input-error]="
+                registerForm.get('confirmPassword')?.touched &&
+                registerForm.get('confirmPassword')?.invalid
+              "
+            />
+          </div>
+
+          @if (
+            registerForm.get('confirmPassword')?.touched &&
+            registerForm.get('confirmPassword')?.errors
+          ) {
+            <div class="error-msg">
+              @if (registerForm.get('confirmPassword')?.errors?.['required']) {
+                <span>A confirmação de senha é obrigatória.</span>
+              }
+              @if (registerForm.get('confirmPassword')?.errors?.['passwordMismatch']) {
+                <span>As senhas não coincidem.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="spinner"></span>
+            <span>Cadastrando...</span>
+          } @else {
+            <span>Cadastrar</span>
+          }
+        </button>
+      </form>
+
+      <div class="form-footer">
+        <p>Não tem conta ainda? <a routerLink="/">Faça login</a></p>
+      </div>
+    </div>
+  </div>
+</div>

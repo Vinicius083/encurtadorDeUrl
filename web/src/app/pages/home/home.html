@@ -1,0 +1,315 @@
+<div class="dashboard-container">
+  <!-- Top Navigation Header -->
+  <header class="dashboard-header">
+    <div class="header-left">
+      <div class="brand">
+        <svg class="brand-logo" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m2.542-2.543l1.101-1.101a4 4 0 10-5.656-5.656l-1.5 1.5" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="brand-name">Shortify</span>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <div class="user-profile">
+        <div class="avatar">
+          {{ userName().substring(0, 2).toUpperCase() }}
+        </div>
+        <span class="welcome-text">Olá, <strong class="user-highlight">{{ userName() }}</strong></span>
+      </div>
+      
+      <button class="btn-logout" (click)="logout()" title="Sair da Conta">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>Sair</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Content Layout -->
+  <main class="dashboard-content">
+    
+    <!-- Left Column: Table and Listings -->
+    <section class="urls-section">
+      <div class="section-card">
+        <div class="card-header">
+          <h2>Seus Links Encurtados</h2>
+          <span class="badge-count">{{ urls().length }} encurtados</span>
+        </div>
+
+        <div class="table-responsive">
+          @if (urls().length === 0) {
+            <div class="empty-state">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="48" height="48">
+                <path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m2.542-2.543l1.101-1.101a4 4 0 10-5.656-5.656l-1.5 1.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <h3>Nenhum link cadastrado</h3>
+              <p>Cadastre seu primeiro link original na barra lateral para começar.</p>
+            </div>
+          } @else {
+            <table class="urls-table">
+              <thead>
+                <tr>
+                  <th>Apelido (Alias)</th>
+                  <th>Status</th>
+                  <th>Criação</th>
+                  <th>Expiração (TTL)</th>
+                  <th class="actions-header">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (url of paginatedUrls(); track url.id) {
+                  <tr class="url-row" [class.row-expired]="url.status === 'expired'">
+                    <!-- Alias / Short link -->
+                    <td>
+                      <div class="alias-col">
+                        <span class="alias-name">{{ url.alias }}</span>
+                        <div class="short-link-wrapper">
+                          <span class="short-link">{{ url.shortUrl }}</span>
+                          <button class="btn-copy" (click)="copyToClipboard(url.shortUrl)" title="Copiar link encurtado">
+                            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14">
+                              <path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    </td>
+                    
+                    <!-- Availability status badge -->
+                    <td>
+                      @if (url.status === 'active') {
+                        <span class="badge badge-active">Ativo</span>
+                      } @else {
+                        <span class="badge badge-expired">Expirado</span>
+                      }
+                    </td>
+                    
+                    <!-- Creation Date -->
+                    <td>{{ url.createdAt }}</td>
+                    
+                    <!-- TTL (Time Remaining) -->
+                    <td>
+                      <span class="ttl-text" [class.text-danger]="url.status === 'expired'">
+                        {{ url.ttl }}
+                      </span>
+                    </td>
+                    
+                    <!-- Action buttons -->
+                    <td>
+                      <div class="action-buttons">
+                        <!-- QR Code -->
+                        <button class="action-btn qrcode" (click)="openQrModal(url)" title="Exibir QR Code">
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M4 4h4v4H4V4zm2 2v0m6-2h4v4h-4V4zm2 2v0M4 12h4v4H4v-4zm2 2v0m8 0h4v4h-4v-4zm2 2v0M12 12h0m4 0h0m-4 4h0" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                        
+                        <!-- Edit -->
+                        <button class="action-btn edit" (click)="openEditModal(url)" title="Editar link">
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                        
+                        <!-- Delete -->
+                        <button class="action-btn delete" (click)="openDeleteModal(url)" title="Excluir link">
+                          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                          </svg>
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          }
+        </div>
+
+        <!-- Pagination Controls -->
+        @if (urls().length > itemsPerPage) {
+          <div class="pagination">
+            <button class="page-arrow" [disabled]="currentPage() === 1" (click)="prevPage()">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                <path d="M15 19l-7-7 7-7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <span class="page-info">Página <strong>{{ currentPage() }}</strong> de {{ totalPages() }}</span>
+            <button class="page-arrow" [disabled]="currentPage() === totalPages()" (click)="nextPage()">
+              <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="16" height="16">
+                <path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        }
+      </div>
+    </section>
+
+    <!-- Right Column: Registration Panel -->
+    <section class="cadastre-section">
+      <div class="section-card">
+        <div class="card-header">
+          <h2>Cadastrar Link</h2>
+          <p>Crie um novo link encurtado</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onRegisterUrl()" class="register-url-form">
+          <!-- Alias Input -->
+          <div class="form-group">
+            <label for="alias">Alias (opcional)</label>
+            <div class="input-wrapper">
+              <span class="prefix">shrt.fy/</span>
+              <input 
+                type="text" 
+                id="alias" 
+                formControlName="alias" 
+                placeholder="apelido-customizado"
+              />
+            </div>
+            <span class="help-text">Se deixado em branco, geramos um apelido aleatório.</span>
+          </div>
+
+          <!-- Original URL Input -->
+          <div class="form-group">
+            <label for="originalUrl">URL original *</label>
+            <div class="input-wrapper">
+              <input 
+                type="url" 
+                id="originalUrl" 
+                formControlName="originalUrl" 
+                placeholder="https://exemplo.com/pagina-longa"
+                [class.input-error]="registerForm.get('originalUrl')?.touched && registerForm.get('originalUrl')?.invalid"
+              />
+            </div>
+            @if (registerForm.get('originalUrl')?.touched && registerForm.get('originalUrl')?.invalid) {
+              <span class="error-msg">Por favor, insira uma URL válida (deve iniciar com http:// ou https://).</span>
+            }
+          </div>
+
+          <!-- Expiration (TTL) -->
+          <div class="form-group">
+            <label for="expiration">Tempo de expiração (opcional)</label>
+            <select id="expiration" formControlName="expiration" class="select-expiration">
+              <option value="1">1 Dia (24 horas)</option>
+              <option value="7">7 Dias (1 semana)</option>
+              <option value="30">30 Dias (1 mês)</option>
+              <option value="never">Nunca expirar</option>
+            </select>
+          </div>
+
+          <button type="submit" class="btn-submit">
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="18" height="18" style="margin-right: 0.5rem;">
+              <path d="M12 4v16m8-8H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span>Encurtar Link</span>
+          </button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- ================= MODALS ================= -->
+
+<!-- QR CODE MODAL -->
+@if (showQrModal() && selectedUrl()) {
+  <div class="modal-overlay" (click)="closeAllModals()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Compartilhar QR Code</h3>
+        <button class="modal-close" (click)="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body qr-modal-body">
+        <p>Aponte a câmera para acessar o link encurtado:</p>
+        <div class="qr-code-container">
+          <img 
+            [src]="'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=' + (selectedUrl()?.qrCode || selectedUrl()?.shortUrl)" 
+            [alt]="'QR Code para ' + selectedUrl()?.shortUrl"
+            class="qr-code-img"
+          />
+        </div>
+        <span class="qr-link">{{ selectedUrl()?.shortUrl }}</span>
+        <p class="qr-dest">Original: <a [href]="selectedUrl()?.originalUrl" target="_blank">{{ selectedUrl()?.originalUrl }}</a></p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="copyToClipboard(selectedUrl()!.shortUrl)">Copiar Link</button>
+        <button class="btn-primary" (click)="closeAllModals()">Fechar</button>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- EDIT MODAL -->
+@if (showEditModal() && selectedUrl()) {
+  <div class="modal-overlay" (click)="closeAllModals()">
+    <div class="modal-card" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Editar Link Encurtado</h3>
+        <button class="modal-close" (click)="closeAllModals()">&times;</button>
+      </div>
+      <form [formGroup]="editForm" (ngSubmit)="onSaveEdit()">
+        <div class="modal-body edit-modal-body">
+          <!-- Alias Field -->
+          <div class="form-group">
+            <label for="edit-alias">Apelido (Alias)</label>
+            <input 
+              type="text" 
+              id="edit-alias" 
+              formControlName="alias" 
+              placeholder="apelido"
+            />
+          </div>
+
+          <!-- Original URL Field -->
+          <div class="form-group">
+            <label for="edit-original">URL Original</label>
+            <input 
+              type="url" 
+              id="edit-original" 
+              formControlName="originalUrl" 
+              placeholder="https://original.com"
+            />
+            @if (editForm.get('originalUrl')?.touched && editForm.get('originalUrl')?.invalid) {
+              <span class="error-msg">Insira uma URL válida.</span>
+            }
+          </div>
+
+          <!-- Status selection -->
+          <div class="form-group">
+            <label for="edit-status">Status</label>
+            <select id="edit-status" formControlName="status" class="select-expiration">
+              <option value="active">Ativo</option>
+              <option value="expired">Expirado</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="closeAllModals()">Cancelar</button>
+          <button type="submit" class="btn-primary">Salvar Alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- DELETE CONFIRMATION MODAL -->
+@if (showDeleteModal() && selectedUrl()) {
+  <div class="modal-overlay" (click)="closeAllModals()">
+    <div class="modal-card delete-modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Excluir Link Permanente</h3>
+        <button class="modal-close" (click)="closeAllModals()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p>Você tem certeza que deseja excluir o link encurtado <strong>shrt.fy/{{ selectedUrl()?.alias }}</strong>?</p>
+        <p class="text-muted warning-text">Esta ação é irreversível e o link deixará de funcionar imediatamente.</p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" (click)="closeAllModals()">Cancelar</button>
+        <button class="btn-danger" (click)="confirmDelete()">Excluir Link</button>
+      </div>
+    </div>
+  </div>
+}

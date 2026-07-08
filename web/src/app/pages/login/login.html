@@ -1,0 +1,166 @@
+<div class="page-container">
+  <div class="login-card">
+    <!-- Left Side: Decorative & Marketing Info -->
+    <div class="card-visual">
+      <div class="visual-bg">
+        <div class="circle circle-1"></div>
+        <div class="circle circle-2"></div>
+      </div>
+      <div class="visual-content">
+        <div class="brand">
+          <svg
+            class="brand-logo"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m2.542-2.543l1.101-1.101a4 4 0 10-5.656-5.656l-1.5 1.5"
+              stroke="currentColor"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span class="brand-name">Shortify</span>
+        </div>
+
+        <div class="promo-text">
+          <h2>Simplifique seus links, amplie seu alcance.</h2>
+          <p>
+            Crie links encurtados personalizados, acompanhe estatísticas e gerencie tudo em um único
+            painel moderno.
+          </p>
+        </div>
+
+        <div class="visual-footer">
+          <span>&copy; 2026 Shortify Inc.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Side: Form Content -->
+    <div class="card-form">
+      <div class="form-header">
+        <h1>BEM-VINDO</h1>
+        <p>Acesse sua conta para continuar</p>
+      </div>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="auth-form" novalidate>
+        <!-- Email Field -->
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="email"
+              id="email"
+              formControlName="email"
+              placeholder="seu.email@exemplo.com"
+              [class.input-error]="
+                loginForm.get('email')?.touched && loginForm.get('email')?.invalid
+              "
+            />
+          </div>
+
+          @if (loginForm.get('email')?.touched && loginForm.get('email')?.errors) {
+            <div class="error-msg">
+              @if (loginForm.get('email')?.errors?.['required']) {
+                <span>O e-mail é obrigatório.</span>
+              }
+              @if (loginForm.get('email')?.errors?.['email']) {
+                <span>Digite um e-mail válido (ex: nome@dominio.com).</span>
+              }
+            </div>
+          }
+        </div>
+
+        <!-- Password Field -->
+        <div class="form-group">
+          <label for="password">Senha</label>
+          <div class="input-wrapper">
+            <svg
+              class="input-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <input
+              type="password"
+              id="password"
+              formControlName="password"
+              placeholder="Digite sua senha"
+              [class.input-error]="
+                loginForm.get('password')?.touched && loginForm.get('password')?.invalid
+              "
+            />
+          </div>
+
+          @if (loginForm.get('password')?.touched && loginForm.get('password')?.errors) {
+            <div class="error-msg">
+              @if (loginForm.get('password')?.errors?.['required']) {
+                <span>A senha é obrigatória.</span>
+              }
+              @if (loginForm.get('password')?.errors?.['minlength']) {
+                <span>A senha deve ter pelo menos 8 caracteres.</span>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="demo-tip">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+          >
+            <path
+              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          <span>Use <strong>erro@teste.com</strong> para simular falha no login.</span>
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="isSubmitting()">
+          @if (isSubmitting()) {
+            <span class="spinner"></span>
+            <span>Entrando...</span>
+          } @else {
+            <span>Entrar</span>
+          }
+        </button>
+      </form>
+
+      <div class="form-footer">
+        <p>Não tem conta ainda? <a routerLink="/cadastro">Cadastre-se</a></p>
+      </div>
+    </div>
+  </div>
+</div>

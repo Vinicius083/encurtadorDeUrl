@@ -104,6 +104,33 @@ Resposta esperada:
 {"status":"ok","app":"Encurtador de URL"}
 ```
 
+## Frontend (Web)
+
+O frontend foi desenvolvido em Angular. Para rodar a aplicação web localmente:
+
+### Pré-requisitos
+- Node.js 18+
+- npm
+
+### Rodando o Frontend
+
+Acesse a pasta `web`, instale as dependências e inicie o servidor de desenvolvimento:
+
+```bash
+cd web
+npm install
+npm run start
+```
+
+O servidor de desenvolvimento iniciará em:
+
+```text
+http://localhost:4200
+```
+
+> [!NOTE]
+> Certifique-se de que o backend está rodando localmente na porta `8000` para que o frontend consiga se comunicar com a API.
+
 ## Variaveis de ambiente
 
 Copie `backend/.env.example` para `backend/.env` e ajuste conforme necessario.
