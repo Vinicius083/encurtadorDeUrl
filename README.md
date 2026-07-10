@@ -20,6 +20,7 @@ Aplicacao para encurtar URLs, gerenciar links cadastrados e redirecionar acessos
 - Python 3.12+
 - FastAPI
 - Apache Cassandra 5.0
+- Redis
 - Docker
 - PyJWT
 - bcrypt
