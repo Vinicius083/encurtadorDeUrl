@@ -80,3 +80,11 @@ def init_schema(session: Session) -> None:
         ) WITH CLUSTERING ORDER BY (dia DESC, id DESC)
         """
     )
+    session.execute(
+        """
+        CREATE TABLE IF NOT EXISTS url_access_counters (
+          codigo text PRIMARY KEY,
+          access_count counter
+        )
+        """
+    )

@@ -16,6 +16,11 @@ class Settings(BaseSettings):
     cassandra_keyspace: str = "url_shortener"
     cassandra_datacenter: str = "datacenter1"
 
+    redis_host: str = "redis"
+    redis_port: int = 6379
+    redis_db: int = 0
+    redis_password: str = ""
+    redis_ttl_seconds: int = 86400
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
 
     @property
