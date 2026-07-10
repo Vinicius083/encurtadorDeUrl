@@ -6,6 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import urls_routes, usuarios_routes
 from app.core.config import get_settings
 from app.db.cassandra import close_session, get_session
+from app.db.redis import close_redis
 from app.db.schema import init_schema
 
 
@@ -15,6 +16,7 @@ async def lifespan(app: FastAPI):
     init_schema(session)
     yield
     close_session()
+    close_redis()
 
 
 settings = get_settings()

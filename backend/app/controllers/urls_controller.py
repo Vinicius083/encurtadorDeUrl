@@ -6,6 +6,7 @@ from app.db.cassandra import get_session
 from app.models.domain import Usuario
 from app.repositories.urls import UrlRepository
 from app.schemas.urls import AcessoResponse, BatchDeleteRequest, UrlCreate, UrlResponse, UrlUpdate
+from app.services.cache_service import CacheService
 from app.services.urls_service import UrlService
 
 
@@ -13,8 +14,15 @@ def get_url_repository() -> UrlRepository:
     return UrlRepository(get_session())
 
 
-def get_url_service(urls: UrlRepository = Depends(get_url_repository)) -> UrlService:
-    return UrlService(urls)
+def get_cache_service() -> CacheService:
+    return CacheService()
+
+
+def get_url_service(
+    urls: UrlRepository = Depends(get_url_repository),
+    cache: CacheService = Depends(get_cache_service),
+) -> UrlService:
+    return UrlService(urls, cache)
 
 
 def cadastrar_url(
