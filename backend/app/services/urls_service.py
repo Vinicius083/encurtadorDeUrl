@@ -6,6 +6,7 @@ from app.core.config import get_settings
 from app.models.domain import UrlEncurtada, Usuario
 from app.repositories.urls import UrlRepository
 from app.schemas.urls import AcessoResponse, BatchDeleteRequest, UrlCreate, UrlResponse, UrlUpdate
+from app.services.cache_service import CacheService
 
 
 def url_to_response(url: UrlEncurtada) -> UrlResponse:
@@ -32,8 +33,9 @@ def is_expired(expiration) -> bool:
 
 
 class UrlService:
-    def __init__(self, urls: UrlRepository):
+    def __init__(self, urls: UrlRepository, cache: CacheService):
         self.urls = urls
+        self.cache = cache
 
     def cadastrar(self, payload: UrlCreate, usuario: Usuario) -> UrlResponse:
         try:
@@ -73,6 +75,10 @@ class UrlService:
             self.urls.delete(codigo, usuario.id)
 
     def acessar(self, codigo: str) -> str:
+        cached_data = self.cache.get(codigo)
+        if cached_data:
+            return cached_data["url"]
+
         url = self.urls.find_by_codigo(codigo)
         if not url:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="URL nao encontrada.")
@@ -84,6 +90,13 @@ class UrlService:
             raise HTTPException(status_code=status.HTTP_410_GONE, detail="URL expirada.")
 
         self.urls.register_access(codigo)
+        self.urls.increment_access_counter(codigo)
+        
+        count = self.urls.get_access_count(codigo)
+        if count == 50:
+            settings = get_settings()
+            self.cache.set(codigo, {"codigo": codigo, "url": url.url_original}, ttl_seconds=settings.redis_ttl_seconds)
+
         return url.url_original
 
     def listar_acessos(self, codigo: str, usuario: Usuario, limit: int = 100) -> list[AcessoResponse]:

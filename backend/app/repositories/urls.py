@@ -112,6 +112,19 @@ class UrlRepository:
             for row in rows
         ]
 
+    def increment_access_counter(self, codigo: str) -> None:
+        self.session.execute(
+            "UPDATE url_access_counters SET access_count = access_count + 1 WHERE codigo = %s",
+            (codigo,),
+        )
+
+    def get_access_count(self, codigo: str) -> int:
+        row = self.session.execute(
+            "SELECT access_count FROM url_access_counters WHERE codigo = %s",
+            (codigo,),
+        ).one()
+        return row.access_count if row else 0
+
     def _to_python_date(self, value) -> date:
         if isinstance(value, date):
             return value
